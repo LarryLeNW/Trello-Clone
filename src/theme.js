@@ -2,8 +2,8 @@ import { experimental_extendTheme } from "@mui/material";
 import { cyan, deepOrange, orange, teal } from "@mui/material/colors";
 
 // initialize css variable styles
-const appBarHeight = "48px";
-const boardBarHeight = "58px";
+const appBarHeight = "58px";
+const boardBarHeight = "60px";
 
 const theme = experimental_extendTheme({
     custom: {
