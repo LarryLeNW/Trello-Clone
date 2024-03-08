@@ -1,8 +1,16 @@
 import { experimental_extendTheme } from "@mui/material";
 import { cyan, deepOrange, orange, teal } from "@mui/material/colors";
 
-// Create a theme instance.
+// initialize css variable styles
+const appBarHeight = "48px";
+const boardBarHeight = "58px";
+
 const theme = experimental_extendTheme({
+    custom: {
+        appBarHeight,
+        boardBarHeight,
+        contentHeight: `calc(100vh - ${appBarHeight} - ${boardBarHeight})`,
+    },
     colorSchemes: {
         light: {
             palette: { primary: teal, secondary: deepOrange },
@@ -11,7 +19,6 @@ const theme = experimental_extendTheme({
             palette: { primary: cyan, secondary: orange },
         },
     },
-    // ...other properties
 });
 
 export default theme;
