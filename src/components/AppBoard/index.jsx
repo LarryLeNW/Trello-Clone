@@ -18,14 +18,15 @@ import Profiles from "./Menus/Profiles";
 function AppBoard() {
     return (
         <Box
-            px={2}
             sx={{
-                backgroundColor: "primary.light",
                 width: "100%",
                 height: (theme) => theme.custom.appBarHeight,
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "space-between",
+                gap: 2,
+                overflowX: "auto",
+                paddingX: 2,
             }}
         >
             <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
@@ -43,11 +44,14 @@ function AppBoard() {
                     <div> Icon</div>
                     <Typography variant="span">Trello</Typography>
                 </Box>
-                <WorkSpaces />
-                <Recent />
-                <Starred />
-                <Templates />
-                <Button variant="outlined">Create </Button>
+
+                <Box sx={{ display: { xs: "none", md: "flex" }, gap: 1 }}>
+                    <WorkSpaces />
+                    <Recent />
+                    <Starred />
+                    <Templates />
+                    <Button variant="outlined">Create </Button>
+                </Box>
             </Box>
 
             <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
@@ -56,6 +60,7 @@ function AppBoard() {
                     label="Search ..."
                     type="search"
                     size="small"
+                    sx={{ minWidth: "120px" }}
                 ></TextField>
                 <ModeSelect />
                 <Tooltip title="Notifications">
@@ -64,12 +69,14 @@ function AppBoard() {
                         variant="dot"
                         sx={{ cursor: "pointer" }}
                     >
-                        <NotificationsActiveIcon />
+                        <NotificationsActiveIcon
+                            sx={{ color: "primary.main" }}
+                        />
                     </Badge>
                 </Tooltip>
 
                 <Tooltip title="Help">
-                    <HelpOutlineOutlinedIcon />
+                    <HelpOutlineOutlinedIcon sx={{ color: "primary.main" }} />
                 </Tooltip>
 
                 <Profiles />

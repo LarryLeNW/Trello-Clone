@@ -13,7 +13,6 @@ import {
     Button,
     Divider,
     ListItemIcon,
-    ListItemText,
     Menu,
     MenuItem,
     Tooltip,
