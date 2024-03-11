@@ -1,17 +1,18 @@
 import { Box } from "@mui/material";
+import ListColumns from "./ListColumn";
 
 function BoardContent() {
     return (
         <Box
             sx={{
-                backgroundColor: "primary.main",
+                backgroundColor: (theme) =>
+                    theme.palette.mode === "dark" ? "#34495e" : "#1976d2",
                 width: "100%",
                 height: (theme) => theme.custom.contentHeight,
-                display: "flex",
-                alignItems: "center",
+                p: "10px 0",
             }}
         >
-            Content
+            <ListColumns />
         </Box>
     );
 }

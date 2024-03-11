@@ -37,6 +37,7 @@ function Templates() {
                 aria-expanded={open ? "true" : undefined}
                 onClick={handleClick}
                 endIcon={<ExpandMoreOutlined />}
+                sx={{ color: "white" }}
             >
                 Templates
             </Button>

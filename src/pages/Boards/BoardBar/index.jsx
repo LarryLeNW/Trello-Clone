@@ -11,12 +11,12 @@ import { Avatar, AvatarGroup, Box, Button, Chip, Tooltip } from "@mui/material";
 function BoardBar() {
     const MenuStyle = {
         paddingX: "5px",
-        color: "primary.main",
-        bgcolor: "white",
+        color: "white",
+        bgcolor: "transparent",
         border: "none",
         borderRadius: "4px",
         "& .MuiSvgIcon-root": {
-            color: "primary.main",
+            color: "white",
         },
         "&:hover": { bgcolor: "primary.50" },
     };
@@ -31,8 +31,10 @@ function BoardBar() {
                 justifyContent: "space-between",
                 gap: 2,
                 overflowX: "auto",
-                borderTop: "1px solid #00bfa5",
+                borderBottom: "1px solid #00bfa5",
                 paddingX: 2,
+                bgcolor: (theme) =>
+                    theme.palette.mode === "dark" ? "#34495e" : "#1976d2",
             }}
         >
             <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
@@ -68,13 +70,28 @@ function BoardBar() {
                 />
             </Box>
             <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-                <Button variant="outlined" startIcon={<PersonAdd />}>
+                <Button
+                    variant="outlined"
+                    sx={{
+                        color: "white",
+                        borderColor: "white",
+                        "&:hover": { borderColor: "white" },
+                    }}
+                    startIcon={<PersonAdd />}
+                >
                     Invite
                 </Button>
                 <AvatarGroup
                     max={3}
                     sx={{
-                        "& .MuiAvatar-root": { width: "32px", height: "32px" },
+                        "& .MuiAvatar-root": {
+                            width: "32px",
+                            height: "32px",
+                            border: "none",
+                            fontSize: 16,
+                            cursor: "pointer",
+                            "&:first-of-type": { bgcolor: "#a4b0be" },
+                        },
                     }}
                 >
                     <Tooltip title="LarryLe">
