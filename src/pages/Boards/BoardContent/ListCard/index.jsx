@@ -1,7 +1,8 @@
 import { Box } from "@mui/material";
 import Card from "../Card";
 
-function ListCard() {
+function ListCard({ listCard }) {
+    console.log("🚀 ~ ListCard ~ listCard:", listCard);
     return (
         <Box
             sx={{
@@ -26,10 +27,9 @@ function ListCard() {
                 },
             }}
         >
-            <Card />
-            <Card hideMedia />
-            <Card />
-            <Card />
+            {listCard?.map((card) => (
+                <Card key={card._id} card={card} />
+            ))}
         </Box>
     );
 }

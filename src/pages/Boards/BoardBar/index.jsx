@@ -7,19 +7,20 @@ import {
     VpnLock,
 } from "@mui/icons-material";
 import { Avatar, AvatarGroup, Box, Button, Chip, Tooltip } from "@mui/material";
-
-function BoardBar() {
-    const MenuStyle = {
-        paddingX: "5px",
+const MenuStyle = {
+    paddingX: "5px",
+    color: "white",
+    bgcolor: "transparent",
+    border: "none",
+    borderRadius: "4px",
+    "& .MuiSvgIcon-root": {
         color: "white",
-        bgcolor: "transparent",
-        border: "none",
-        borderRadius: "4px",
-        "& .MuiSvgIcon-root": {
-            color: "white",
-        },
-        "&:hover": { bgcolor: "primary.50" },
-    };
+    },
+    "&:hover": { bgcolor: "primary.50" },
+};
+
+function BoardBar({ board }) {
+    console.log("🚀 ~ BoardBar ~ board :", board);
 
     return (
         <Box
@@ -42,13 +43,15 @@ function BoardBar() {
                     sx={MenuStyle}
                     clickable
                     icon={<Dashboard />}
-                    label="LarryLe"
+                    label={board?.title}
                 />
                 <Chip
                     sx={MenuStyle}
                     clickable
                     icon={<VpnLock />}
-                    label="Public/Private Workspace"
+                    label={
+                        board.type.charAt(0).toUpperCase() + board.type.slice(1)
+                    }
                 />
                 <Chip
                     sx={MenuStyle}

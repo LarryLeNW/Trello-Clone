@@ -3,7 +3,8 @@ import { Box, Button } from "@mui/material";
 import { NoteAdd } from "@mui/icons-material";
 import Column from "../Column";
 
-function ListColumns() {
+function ListColumns({ listCol }) {
+    console.log("🚀 ~ ListColumns ~ listCol:", listCol);
     return (
         <Box
             sx={{
@@ -15,8 +16,10 @@ function ListColumns() {
                 overflowY: "hidden",
             }}
         >
-            <Column />
-            <Column />
+            {listCol?.map((column, index) => (
+                <Column key={index} column={column} />
+            ))}
+            {/* create column */}
             <Box
                 sx={{
                     minWidth: "200px",

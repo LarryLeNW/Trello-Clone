@@ -8,23 +8,8 @@ import {
     Typography,
 } from "@mui/material";
 
-function Card({ hideMedia }) {
-    if (hideMedia) {
-        return (
-            <MuiCard
-                sx={{
-                    cursor: "pointer",
-                    boxShadow: "0 1px 1px rgba(0,0,0,0.2)",
-                    overflow: "unset",
-                }}
-            >
-                <CardContent sx={{ p: 1.5, "&:last-child": { p: 1.5 } }}>
-                    <Typography>LE BA TRINH</Typography>
-                </CardContent>
-            </MuiCard>
-        );
-    }
-
+function Card({ card }) {
+    console.log("🚀 ~ Card ~ card sdfsdf :", card?.cover);
     return (
         <MuiCard
             sx={{
@@ -33,23 +18,22 @@ function Card({ hideMedia }) {
                 overflow: "unset",
             }}
         >
-            <CardMedia
-                sx={{ height: 140 }}
-                image="https://t4.ftcdn.net/jpg/06/44/73/07/360_F_644730710_9TMS6TRLVTwD20Jis58GSXrzhsTze7tS.jpg"
-                title="green iguana"
-            />
+            {card?.cover && (
+                <CardMedia sx={{ height: 140 }} image={card?.cover} />
+            )}
+
             <CardContent sx={{ p: 1.5, "&:last-child": { p: 1.5 } }}>
-                <Typography>LE BA TRINH</Typography>
+                <Typography>{card?.title}</Typography>
             </CardContent>
             <CardActions sx={{ p: "0 4px 8px 4px" }}>
                 <Button size="small" startIcon={<Group />}>
-                    20
+                    {!!card?.memberIds ? card?.memberIds.length : "0"}
                 </Button>
                 <Button size="small" startIcon={<ModeComment />}>
-                    9
+                    {!!card?.comments ? card?.comments.length : "0"}
                 </Button>
                 <Button size="small" startIcon={<AttachFile />}>
-                    10
+                    {!!card?.attachments ? card?.attachments.length : "0"}
                 </Button>
             </CardActions>
         </MuiCard>

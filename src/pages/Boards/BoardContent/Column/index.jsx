@@ -22,18 +22,19 @@ import {
     Typography,
 } from "@mui/material";
 import ListCard from "../ListCard";
+import { mapOrder } from "~/util/sorts";
 
-function Column() {
+function Column({ column }) {
     const [anchorEl, setAnchorEl] = useState(null);
-
     const open = Boolean(anchorEl);
-
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    const orderedCards = mapOrder(column?.cards, column.cardOrderIds, "_id");
     return (
         <Box
             sx={{
@@ -59,7 +60,7 @@ function Column() {
                 }}
             >
                 <Typography sx={{ fontWeight: "bold", cursor: "pointer" }}>
-                    COLUMN TITLE
+                    {column?.title}
                 </Typography>
 
                 <Box>
@@ -127,7 +128,7 @@ function Column() {
             </Box>
 
             {/* body card */}
-            <ListCard />
+            <ListCard listCard={orderedCards} />
             {/* footer */}
             <Box
                 sx={{
