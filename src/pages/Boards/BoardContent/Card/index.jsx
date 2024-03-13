@@ -9,7 +9,6 @@ import {
 } from "@mui/material";
 
 function Card({ card }) {
-    console.log("🚀 ~ Card ~ card sdfsdf :", card?.cover);
     return (
         <MuiCard
             sx={{
