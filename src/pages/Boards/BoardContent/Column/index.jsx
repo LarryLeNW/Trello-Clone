@@ -31,6 +31,7 @@ function Column({ column }) {
         useSortable({ id: column._id, data: { ...column } });
 
     const styleDndKit = {
+        // touchAction: "none", // dành cho sensor default dạng pointerSensor
         transform: CSS.Translate.toString(transform),
         transition,
     };
