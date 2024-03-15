@@ -8,11 +8,9 @@ import "./index.css";
 import { GlobalStyles } from "@mui/material";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-    <React.StrictMode>
-        <CssVarsProvider theme={theme}>
-            <CssBaseline />
-            {/* <GlobalStyles styles={{ icon: { color: "red" } }} /> */}
-            <App />
-        </CssVarsProvider>
-    </React.StrictMode>
+    <CssVarsProvider theme={theme}>
+        <CssBaseline />
+        {/* <GlobalStyles styles={{ icon: { color: "red" } }} /> */}
+        <App />
+    </CssVarsProvider>
 );
