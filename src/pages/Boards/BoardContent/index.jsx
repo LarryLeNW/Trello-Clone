@@ -9,6 +9,7 @@ import {
   TouchSensor,
   DragOverlay,
   defaultDropAnimationSideEffects,
+  closestCorners,
 } from "@dnd-kit/core";
 import { useEffect, useState } from "react";
 import { arrayMove } from "@dnd-kit/sortable";
@@ -25,6 +26,7 @@ function BoardContent({ board }) {
   const [activeIdItemDrag, setActiveIdItemDrag] = useState(null);
   const [activeTypeItemDrag, setActiveTypeItemDrag] = useState(null);
   const [activeDataItemDrag, setActiveDataItemDrag] = useState(null);
+  const [oldColumnDragging, setOldColumnDragging] = useState(null);
 
   // Pull 10px to trigger the event
   const mouseSensor = useSensor(MouseSensor, {
@@ -50,6 +52,9 @@ function BoardContent({ board }) {
         : ACTIVE_DRAG_TYPE.COLUMN
     );
     setActiveDataItemDrag(e?.active?.data?.current);
+    if (e?.active?.data?.current?.columnId) {
+      setOldColumnDragging(findColumnByCardId(e?.active?.id));
+    }
   };
 
   let findColumnByCardId = (cardId) => {
@@ -60,13 +65,18 @@ function BoardContent({ board }) {
 
   const handleDragOver = (event) => {
     if (activeTypeItemDrag == ACTIVE_DRAG_TYPE.COLUMN) return;
+
     const { active, over } = event;
+
     if (!over || !active) return;
+
     const {
       id: activeIdCardDragging,
       data: { current: activeDataCardDragging },
     } = active;
+
     const { id: overIdCard } = over;
+
     const activeCol = findColumnByCardId(activeIdCardDragging);
     const overCol = findColumnByCardId(overIdCard);
 
@@ -84,6 +94,7 @@ function BoardContent({ board }) {
           active.rect.current.translated.top > over.rect.top + over.rect.height;
 
         const modifier = isBelowOverItem ? 1 : 0;
+
         newCardIndex =
           overCardIndex >= 0
             ? overCardIndex + modifier
@@ -125,12 +136,52 @@ function BoardContent({ board }) {
   };
 
   const handleDragEnd = (event) => {
-    if (activeTypeItemDrag == ACTIVE_DRAG_TYPE.CARD) return;
     const { active, over } = event;
 
-    if (!over) return;
+    if (!over || !active || over?.id === active?.id) return;
 
-    if (active.id !== over.id) {
+    if (activeTypeItemDrag == ACTIVE_DRAG_TYPE.CARD) {
+      const {
+        id: activeIdCardDragging,
+        data: { current: activeDataCardDragging },
+      } = active;
+
+      const { id: overIdCard } = over;
+
+      const activeCol = findColumnByCardId(activeIdCardDragging);
+      const overCol = findColumnByCardId(overIdCard);
+
+      if (!activeCol || !overCol) return;
+
+      if (oldColumnDragging._id === overCol._id) {
+        const oldCardIndex = oldColumnDragging?.cards?.findIndex(
+          (c) => c._id === active.id
+        );
+        const newCardIndex = overCol?.cards?.findIndex(
+          (c) => c._id === over.id
+        );
+        const dndOrderedCards = arrayMove(
+          oldColumnDragging?.cards,
+          oldCardIndex,
+          newCardIndex
+        );
+
+        setOrderedColumns((prevColumns) => {
+          const nextCols = cloneDeep(prevColumns);
+          // tìm tới column mà ta đang thả
+          const targetColumn = nextCols.find((c) => c._id === overCol._id);
+          // cập nhật lại 2 giá trị mới là card và cardOrderIds trong column
+          targetColumn.cards = dndOrderedCards;
+          targetColumn.cardOrderIds = dndOrderedCards.map((card) => card._id);
+          return nextCols;
+        });
+      } else {
+        console.log("drag card into other column ");
+      }
+    }
+
+    if (activeTypeItemDrag == ACTIVE_DRAG_TYPE.COLUMN) {
+      console.log("handle dragend column");
       const oldIndex = orderedColumns.findIndex((c) => c._id === active.id);
       const newIndex = orderedColumns.findIndex((c) => c._id === over.id);
       const dndOrderedColumns = arrayMove(orderedColumns, oldIndex, newIndex);
@@ -141,6 +192,7 @@ function BoardContent({ board }) {
     setActiveIdItemDrag(null);
     setActiveTypeItemDrag(null);
     setActiveDataItemDrag(null);
+    setOldColumnDragging(null);
   };
 
   const customDropAnimation = {
@@ -152,10 +204,11 @@ function BoardContent({ board }) {
   };
   return (
     <DndContext
+      sensors={sensors}
+      collisionDetection={closestCorners}
       onDragStart={handleDragStart}
       onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}
-      sensors={sensors}
     >
       <Box
         sx={{
