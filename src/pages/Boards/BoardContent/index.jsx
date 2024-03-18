@@ -15,7 +15,8 @@ import { useEffect, useState } from "react";
 import { arrayMove } from "@dnd-kit/sortable";
 import Card from "./Card";
 import Column from "./Column";
-import { cloneDeep } from "lodash";
+import { cloneDeep, isEmpty } from "lodash";
+import { generatePlaceholderCard } from "~/util/formartter";
 const ACTIVE_DRAG_TYPE = {
   COLUMN: "COLUMN",
   CARD: "ACTIVE_CARD",
@@ -110,21 +111,39 @@ function BoardContent({ board }) {
           nextActiveColumn.cards = nextActiveColumn.cards.filter(
             (card) => card._id !== activeIdCardDragging
           );
+
+          //check is empty col then create placeholder cards
+          if (isEmpty(nextActiveColumn?.cards)) {
+            nextActiveColumn.cards = [
+              generatePlaceholderCard(nextActiveColumn),
+            ];
+          }
+
           nextActiveColumn.cardOrderIds = nextActiveColumn.cards.map(
             (card) => card._id
           );
         }
 
+        //  New card to the Column the user wants to drop
         if (nextOverColumn) {
+          // Check the exit this card in the column you want to remove, if there is one, delete this card
           nextOverColumn.cards = nextOverColumn.cards.filter(
             (card) => card._id !== activeIdCardDragging
           );
 
+          // add card in this col
           nextOverColumn.cards = nextOverColumn.cards.toSpliced(
             newCardIndex,
             0,
             activeDataCardDragging
           );
+
+          // delete the placeholder card if it exists.
+          nextOverColumn.cards = nextOverColumn.cards.filter(
+            (card) => !card.FE_PlaceholderCard
+          );
+
+          // update order col drop
           nextOverColumn.cardOrderIds = nextOverColumn.cards.map(
             (card) => card._id
           );
